@@ -1,0 +1,36 @@
+/gift-front/.DS_Store
+/gift-front/node_modules
+/gift-front/dist
+
+# local env files
+/gift-front/.env.local
+/gift-front/.env.*.local
+
+# Log files
+/gift-front/npm-debug.log*
+/gift-front/yarn-debug.log*
+/gift-front/yarn-error.log*
+/gift-front/pnpm-debug.log*
+
+# Editor directories and files
+/gift-front/.idea
+/gift-front/.vscode
+/gift-front/*.suo
+/gift-front/*.ntvs*
+/gift-front/*.njsproj
+/gift-front/*.sln
+/gift-front/*.sw?
+
+# Backend files
+/gift-backend/.idea/
+/gift-backend/__pycache__/
+/gift-backend/db.sqlite3
+/gift-backend/httpRequests/
+/gift-backend/dataSources.local.xml
+/gift-backend/dataSources/
+/gift-backend/workspace.xml
+/gift-backend/shelf/
+/gift-backend/giftbackend/settings.py
+/gift-backend/giftbackend/__pycache__/
+/gift-backend/show/__pycache__/
+/gift-backend/show/migrations/
