@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from .models import Questions
+from giftbackend import settings
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.models import User
 import json
 
 
@@ -29,8 +33,19 @@ def show_questions(request):
     return HttpResponse(dic['answer'])
 
 def ver(request):
+    serializer = Serializer(settings.SECRET_KEY, expires_in=3600)
     if request.method == 'POST':
-        front_question = request.POST.get('question')
-        front_ansewr = request.POST.get('answer')
-        answer = Questions.objects.filter(questions_text=front_question)
-    return render(request, 'show/verification.html')
+        username = request.POST.get('username')
+        passwd = request.POST.get('passwd')
+        user_info = {'username': username, 'passwd': passwd}
+        # 生成token
+        token = serializer.dumps(user_info).decode()
+        # 用户认证
+        user = authenticate(request,username=username, password=passwd)
+        if user is not None:
+            # 登陆
+            login(request,user)
+            data = {'code': 200, 'token': token}
+            return JsonResponse(data)
+        else:
+            return JsonResponse({'status': "error"})

@@ -26,11 +26,11 @@
           />
         </svg>
         <div class="form">
-          <label for="email">邮箱</label>
-          <input type="email" id="email" />
+          <label for="username">账号</label>
+          <input type="text" id="username" v-model="loginForm.username" />
           <label for="password">密码</label>
-          <input type="password" id="password" />
-          <input type="submit" id="submit" value="提交" />
+          <input type="password" id="password" v-model="loginForm.passwd" />
+          <input type="submit" id="submit" value="提交" @click="login" />
         </div>
       </div>
     </div>
@@ -38,15 +38,47 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
 import anime from "animejs";
+import httoaxios from "../unites/httpaxios.js";
+import { Notify } from "vant";
 export default {
+  components: {
+    [Notify.name]: Notify
+  },
   data() {
     return {
-      current: null
+      loginForm: {
+        username: "",
+        passwd: ""
+      }
     };
   },
+  computed: {
+    ...mapState(["serviceUrl"])
+  },
   methods: {
-    emailAnime() {
+    // serviceUrl返回的是一个函数，return this.$store.state.serviceUrl
+    ...mapMutations(["changeLogin"]),
+    login() {
+      // let that = this
+      if (this.loginForm.username === "" || this.loginForm.passwd === "") {
+        Notify({ type: "warning", message: "账号或密码不能为空！" });
+      }
+      // let url = this.serviceUrl
+      let url = this.serviceUrl;
+      httoaxios.post(this, url + "/ver/", this.loginForm, response => {
+        if (response.data.code === 200) {
+          let token = response.data.token;
+          this.changeLogin(token);
+          this.$router.push("/about");
+          
+        } else {
+          Notify({ type: "warning", message: "账号或密码错误！" });
+        }
+      });
+    },
+    usernameAnime() {
       if (this.current) {
         this.current.pause();
       }
@@ -105,15 +137,26 @@ export default {
 
   mounted() {
     document
-      .querySelector("#email")
-      .addEventListener("focus", this.emailAnime, true);
+      .querySelector("#username")
+      .addEventListener("focus", this.usernameAnime, true);
     document
       .querySelector("#password")
-      .addEventListener("focus", this.passwordAnime, true),
-      document
-        .querySelector("#submit")
-        .addEventListener("focus", this.submitAnime, true);
-  }
+      .addEventListener("focus", this.passwordAnime, true);
+    document
+      .querySelector("#submit")
+      .addEventListener("focus", this.submitAnime, true);
+  },
+  // beforeDestroy() {
+  //   document
+  //     .querySelector("#username")
+  //     .removeEventListener("focus", this.usernameAnime);
+  //   document
+  //     .querySelector("#password")
+  //     .removeEventListener("focus", this.passwordAnime);
+  //   document
+  //     .querySelector("#submit")
+  //     .removeEventListener("focus", this.submitAnime);
+  // }
 };
 </script>
 

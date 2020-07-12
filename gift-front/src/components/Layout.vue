@@ -1,7 +1,7 @@
 
 <template>
   <div>
-      <van-button loading type="primary" loading-type="spinner"/>
+      <van-button type="primary" @click="clear">清楚缓存</van-button>
   </div>
 </template>
 
@@ -11,6 +11,11 @@ import { Button } from 'vant';
 export default {
     components: {
         [Button.name]: Button
+    },
+    methods: {
+        clear() {
+            localStorage.removeItem('Authorization');
+        }
     }
 }
 </script>
