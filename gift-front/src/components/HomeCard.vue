@@ -1,7 +1,7 @@
 <template>
-  <div class="card">
+  <div class="card" :style="{'--img': 'url('+getUrl+')'}">
     <div class="content">
-      <h2 class="title">测试</h2>
+      <h2 class="title">{{ textTitle }}</h2>
       <p class="text">计划你的下一次海滩之旅</p>
       <button class="btn">查看详情</button>
     </div>
@@ -9,7 +9,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: ['getUrl', 'textTitle'],
+  data() {
+    return {
+      imgUrl: require('../assets/1.jpg'),
+    }
+  },
+};
 </script>
 
 <style>
@@ -20,23 +27,24 @@ export default {};
   --font-serif: "Cardo", serif;
 }
 .card {
-position: relative;
+  position: relative;
   display: -webkit-box;
   display: flex;
   -webkit-box-align: end;
-          align-items: flex-end;
+  align-items: flex-end;
   overflow: hidden;
   padding: 1rem;
   width: 100%;
   text-align: center;
   color: whitesmoke;
   background-color: whitesmoke;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.1), 0 4px 4px rgba(0, 0, 0, 0.1), 0 8px 8px rgba(0, 0, 0, 0.1), 0 16px 16px rgba(0, 0, 0, 0.1);
-
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.1),
+    0 4px 4px rgba(0, 0, 0, 0.1), 0 8px 8px rgba(0, 0, 0, 0.1),
+    0 16px 16px rgba(0, 0, 0, 0.1);
 }
 
 .card:before {
-  background-image: url(../assets/1.jpg);
+  background-image: var(--img);
   content: "";
   position: absolute;
   top: 0;
@@ -156,7 +164,6 @@ position: relative;
   border: none;
 }
 
-
 @media (min-width: 600px) {
   .content {
     height: 350px;
@@ -165,60 +172,60 @@ position: relative;
 @media (hover: hover) and (min-width: 600px) {
   .card:after {
     -webkit-transform: translateY(0);
-            transform: translateY(0);
+    transform: translateY(0);
   }
 
-.content > *:not(.title) {
-  opacity: 0;
-  -webkit-transform: translateY(1rem);
-  transform: translateY(1rem);
-  -webkit-transition: opacity var(--d) var(--e),
-    -webkit-transform var(--d) var(--e);
-  transition: opacity var(--d) var(--e), -webkit-transform var(--d) var(--e);
-  transition: transform var(--d) var(--e), opacity var(--d) var(--e);
-  transition: transform var(--d) var(--e), opacity var(--d) var(--e),
-    -webkit-transform var(--d) var(--e);
-}
-.content {
-  -webkit-transform: translateY(60%);
-  transform: translateY(60%);
-}
+  .content > *:not(.title) {
+    opacity: 0;
+    -webkit-transform: translateY(1rem);
+    transform: translateY(1rem);
+    -webkit-transition: opacity var(--d) var(--e),
+      -webkit-transform var(--d) var(--e);
+    transition: opacity var(--d) var(--e), -webkit-transform var(--d) var(--e);
+    transition: transform var(--d) var(--e), opacity var(--d) var(--e);
+    transition: transform var(--d) var(--e), opacity var(--d) var(--e),
+      -webkit-transform var(--d) var(--e);
+  }
+  .content {
+    -webkit-transform: translateY(60%);
+    transform: translateY(60%);
+  }
 
-.card:hover,
-.card:focus-within {
-  -webkit-box-align: center;
-  align-items: center;
-}
-.card:hover:before,
-.card:focus-within:before {
-  -webkit-transform: translateY(-4%);
-  transform: translateY(-4%);
-}
-.card:hover:after,
-.card:focus-within:after {
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-.card:hover .content,
-.card:focus-within .content {
-  -webkit-transform: translateY(0);
-  transform: translateY(0);
-}
-.card:hover .content > *:not(.title),
-.card:focus-within .content > *:not(.title) {
-  opacity: 1;
-  -webkit-transform: translateY(0);
-  transform: translateY(0);
-  -webkit-transition-delay: calc(var(--d) / 8);
-  transition-delay: calc(var(--d) / 8);
-}
+  .card:hover,
+  .card:focus-within {
+    -webkit-box-align: center;
+    align-items: center;
+  }
+  .card:hover:before,
+  .card:focus-within:before {
+    -webkit-transform: translateY(-4%);
+    transform: translateY(-4%);
+  }
+  .card:hover:after,
+  .card:focus-within:after {
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  .card:hover .content,
+  .card:focus-within .content {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  .card:hover .content > *:not(.title),
+  .card:focus-within .content > *:not(.title) {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    -webkit-transition-delay: calc(var(--d) / 8);
+    transition-delay: calc(var(--d) / 8);
+  }
 
-.card:focus-within:before,
-.card:focus-within:after,
-.card:focus-within .content,
-.card:focus-within .content > *:not(.title) {
-  -webkit-transition-duration: 0s;
-  transition-duration: 0s;
-}
+  .card:focus-within:before,
+  .card:focus-within:after,
+  .card:focus-within .content,
+  .card:focus-within .content > *:not(.title) {
+    -webkit-transition-duration: 0s;
+    transition-duration: 0s;
+  }
 }
 </style>

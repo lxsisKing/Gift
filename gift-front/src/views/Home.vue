@@ -1,9 +1,9 @@
 <template>
   <div class="page">
     <div class="allcards">
-      <home-card></home-card>
-      <home-card></home-card>
-      <home-card></home-card>
+      <home-card :getUrl=imgOne :textTitle=title.titleOne></home-card>
+      <home-card :getUrl=imgTwo :textTitle=title.titleTwo></home-card>
+      <home-card :getUrl=imgThree  :textTitle=title.titleThree></home-card>
     </div>
   </div>
 </template>
@@ -11,11 +11,21 @@
 <script>
 import HomeCard from "../components/HomeCard.vue";
 export default {
+
   components: {
     HomeCard
   },
   data() {
-    return "a";
+    return {
+      imgOne: require('../assets/1.jpg'),
+      imgTwo: require('../assets/2.jpg'),
+      imgThree: require('../assets/3.jpg'),
+      title: {
+        titleOne: '游戏',
+        titleTwo: '书信',
+        titleThree: '未完待续...',
+      }
+    };
   }
 };
 </script>
