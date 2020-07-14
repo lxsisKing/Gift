@@ -30,20 +30,18 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 * {
   box-sizing: border-box;
 }
 
-body {
-  background: white;
-}
 .page {
   background: #e2e2e5;
   display: grid;
   /* font-family: var(--font-sans); */
   height: calc(100% - 40px);
   width: calc(100% - 40px);
+  position: absolute;
 }
 .allcards {
   grid-gap: 1rem;

@@ -2,8 +2,8 @@
   <div class="page">
     <div class="container">
       <div class="left">
-        <div class="login">登录</div>
-        <div class="eula">欢迎使用！</div>
+        <div class="login">1096天啦</div>
+        <div class="eula">三周年快乐！❤❤❤</div>
       </div>
       <div class="right">
         <svg viewBox="0 0 320 300">
@@ -64,19 +64,19 @@ export default {
       // let that = this
       if (this.loginForm.username === "" || this.loginForm.passwd === "") {
         Notify({ type: "warning", message: "账号或密码不能为空！" });
+      } else {
+        // let url = this.serviceUrl
+        let url = this.serviceUrl;
+        httoaxios.post(this, url + "/ver/", this.loginForm, response => {
+          if (response.data.code === 200) {
+            let token = response.data.token;
+            this.changeLogin(token);
+            this.$router.push("/about");
+          } else {
+            Notify({ type: "warning", message: "账号或密码错误！" });
+          }
+        });
       }
-      // let url = this.serviceUrl
-      let url = this.serviceUrl;
-      httoaxios.post(this, url + "/ver/", this.loginForm, response => {
-        if (response.data.code === 200) {
-          let token = response.data.token;
-          this.changeLogin(token);
-          this.$router.push("/about");
-          
-        } else {
-          Notify({ type: "warning", message: "账号或密码错误！" });
-        }
-      });
     },
     usernameAnime() {
       if (this.current) {
@@ -145,7 +145,7 @@ export default {
     document
       .querySelector("#submit")
       .addEventListener("focus", this.submitAnime, true);
-  },
+  }
   // beforeDestroy() {
   //   document
   //     .querySelector("#username")
@@ -160,7 +160,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 ::selection {
   background: #2d2f36;
 }
@@ -223,13 +223,13 @@ body {
 .login {
   font-size: 50px;
   font-weight: 900;
-  margin: 50px 40px 40px;
+  margin: 70px 20px 20px;
 }
 .eula {
   color: #999;
-  font-size: 14px;
+  font-size: 20px;
   line-height: 1.5;
-  margin: 40px;
+  margin: 30px;
 }
 .right {
   background: #474a59;
