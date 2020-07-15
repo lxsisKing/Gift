@@ -23,14 +23,17 @@ def index(request):
 
 
 def show_questions(request):
-    questions = Questions.objects.filter(answers='这是1')
-    dic = {}
-    l = []
-    for data in questions:
-        dic['question'] = data.questions_text
-        dic['answer'] = data.answers
-        l.append(dic)
-    return HttpResponse(dic['answer'])
+    # questions = Questions.objects.filter(answers='这是1')
+    # dic = {}
+    # l = []
+    # for data in questions:
+    #     dic['question'] = data.questions_text
+    #     dic['answer'] = data.answers
+    #     l.append(dic)
+    # return HttpResponse(dic['answer'])
+    questions = {'1': [{'question': '我们的纪念日'}, {'answer': '20170715'}], '2': [{'question': '我的生日'}, {'answer': '19980720'}]}
+
+    return JsonResponse(questions)
 
 def ver(request):
     serializer = Serializer(settings.SECRET_KEY, expires_in=3600)
