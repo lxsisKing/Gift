@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .models import Questions
+from .models import Questions, Score
 from giftbackend import settings
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 import json
+
+serializer = Serializer(settings.SECRET_KEY, expires_in=3600)
 
 
 # Create your views here.
@@ -23,20 +25,38 @@ def index(request):
 
 
 def show_questions(request):
-    # questions = Questions.objects.filter(answers='这是1')
-    # dic = {}
-    # l = []
-    # for data in questions:
-    #     dic['question'] = data.questions_text
-    #     dic['answer'] = data.answers
-    #     l.append(dic)
-    # return HttpResponse(dic['answer'])
-    questions = {'1': [{'question': '我们的纪念日'}, {'answer': '20170715'}], '2': [{'question': '我的生日'}, {'answer': '19980720'}]}
+    token = request.headers['Authorization']
+    try:
+        serializer.loads(token)
+        questions = list(Questions.objects.order_by('id').values())
+        return JsonResponse({'data': questions})
+    except:
+        return JsonResponse({'data': 'Unauthorized'})
+    # questions = list(Questions.objects.order_by('id').values())
+    # return JsonResponse({'data': questions})
 
-    return JsonResponse(questions)
+
+def get_score(request):
+    token = request.headers['Authorization']
+    try:
+        serializer.loads(token)
+        score = Score.objects.filter(id=0).values()
+        data = list(score)[0]['total_score']
+        return JsonResponse({'data': data})
+    except:
+        return JsonResponse({'data': 'Unauthorized'})
+
+
+def change_score(request):
+    if request.method == 'POST':
+        score = request.POST.get('score')
+        new_score = Score.objects.get(id=0)
+        new_score.total_score = score
+        new_score.save()
+        return JsonResponse({'code': 200})
+
 
 def ver(request):
-    serializer = Serializer(settings.SECRET_KEY, expires_in=3600)
     if request.method == 'POST':
         username = request.POST.get('username')
         passwd = request.POST.get('passwd')
@@ -44,10 +64,10 @@ def ver(request):
         # 生成token
         token = serializer.dumps(user_info).decode()
         # 用户认证
-        user = authenticate(request,username=username, password=passwd)
+        user = authenticate(request, username=username, password=passwd)
         if user is not None:
             # 登陆
-            login(request,user)
+            login(request, user)
             data = {'code': 200, 'token': token}
             return JsonResponse(data)
         else:

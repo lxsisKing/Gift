@@ -2,20 +2,53 @@
   <div class="card" :style="{'--img': 'url('+getUrl+')'}">
     <div class="content">
       <h2 class="title">{{ textTitle }}</h2>
-      <p class="text">计划你的下一次海滩之旅</p>
-      <button class="btn">查看详情</button>
+      <p class="text">{{ textContent }}</p>
+      <button @click="changePage" class="btn">查看详情</button>
     </div>
   </div>
 </template>
 
 <script>
+import { Notify } from "vant";
 export default {
-  props: ['getUrl', 'textTitle'],
+  components: {
+    [Notify.name]: Notify
+  },
+  props: ["getUrl", "textTitle", "textContent", "page", "score"],
   data() {
     return {
-      imgUrl: require('../assets/1.jpg'),
-    }
+      imgUrl: require("../assets/1.jpg")
+    };
   },
+  methods: {
+    changePage() {
+      // if (this.textTitle === "书信") {
+      //   if (this.score >= 5) {
+      //     this.$router.push(this.page)
+      //   } else {
+      //     Notify({ type: "warning", message: "积分不够哦" });
+      //   }
+      // }
+      switch (this.textTitle) {
+        case "书信":
+          if (this.score >= 5) {
+            this.$router.push(this.page);
+          } else {
+            Notify({ type: "warning", message: "积分不够哦" });
+          }
+          break;
+        case "小惊喜":
+          if (this.score >= 10) {
+            this.$router.push(this.page);
+          } else {
+            Notify({ type: "warning", message: "积分不够哦" });
+          }
+          break;
+        default:
+          this.$router.push(this.page);
+      }
+    }
+  }
 };
 </script>
 
@@ -208,14 +241,14 @@ export default {
   }
   .card:hover .content,
   .card:focus-within .content {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
   }
   .card:hover .content > *:not(.title),
   .card:focus-within .content > *:not(.title) {
     opacity: 1;
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
+    -webkit-transform: translateY(10%);
+    transform: translateY(10%);
     -webkit-transition-delay: calc(var(--d) / 8);
     transition-delay: calc(var(--d) / 8);
   }

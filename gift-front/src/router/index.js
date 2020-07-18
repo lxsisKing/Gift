@@ -4,6 +4,7 @@ import Login from "../views/Login.vue"
 import About from "../views/About.vue"
 import Home from "../views/Home.vue"
 import Questions from "../views/Questions.vue"
+import Letter from "../views/Letter.vue"
 
 Vue.use(VueRouter);
 
@@ -28,7 +29,12 @@ const routes = [
         path: '/questions',
         name: 'questions',
         component: Questions
-    }
+    },
+    {
+        path: '/letter',
+        name: 'letter',
+        component: Letter
+    },
 ];
 
 const router = new VueRouter({
@@ -43,7 +49,7 @@ router.beforeEach((to, from, next) => {
         if (token === null || token === '') {
             next()
         } else {
-            next({path: '/about'})
+            next({path: '/home'})
         }
     } else {
         let token = localStorage.getItem('Authorization');

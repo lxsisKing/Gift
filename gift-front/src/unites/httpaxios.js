@@ -14,7 +14,7 @@ export default {
 
     },
     get(that, url, success) {
-        that.$axios.get(url)
+        that.$axios.get(url, {headers: {'Authorization': localStorage.getItem('Authorization')}})
             .then(success)
             .catch(err => {
                 console.log(err);

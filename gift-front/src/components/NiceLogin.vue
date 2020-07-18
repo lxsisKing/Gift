@@ -71,7 +71,7 @@ export default {
           if (response.data.code === 200) {
             let token = response.data.token;
             this.changeLogin(token);
-            this.$router.push("/about");
+            this.$router.push("/home");
           } else {
             Notify({ type: "warning", message: "账号或密码错误！" });
           }
