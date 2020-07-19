@@ -18,13 +18,13 @@
         :score="score"
       ></home-card>
       <home-card
-        :getUrl="imgOne"
+        :getUrl="imgThree"
         :textTitle="title.titleThree"
         :textContent="content.contentThree"
-        :page="nextPage.pageOne"
+        :page="nextPage.pageThree"
         :score="score"
       ></home-card>
-      <home-card :getUrl="imgThree" :textTitle="title.titleFour" :textContent="content.contentFour"></home-card>
+      <home-card :getUrl="imgFour" :textTitle="title.titleFour" :textContent="content.contentFour"></home-card>
     </div>
   </div>
 </template>
@@ -43,6 +43,7 @@ export default {
       imgOne: require("../assets/1.jpg"),
       imgTwo: require("../assets/2.jpg"),
       imgThree: require("../assets/3.jpg"),
+      imgFour: require("../assets/4.jpg"),
       title: {
         titleOne: "问题",
         titleTwo: "书信",
@@ -57,7 +58,8 @@ export default {
       },
       nextPage: {
         pageOne: "/questions",
-        pageTwo: "/letter"
+        pageTwo: "/letter",
+        pageThree: "/voice"
       }
     };
   },
@@ -65,7 +67,7 @@ export default {
     ...mapState(["serviceUrl"])
   },
 
-  mounted() {
+  beforeMount() {
     const getScore = () => {
       let url = this.serviceUrl;
       httpaxios.get(this, url + "/get-score/", response => {

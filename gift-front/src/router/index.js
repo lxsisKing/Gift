@@ -5,6 +5,7 @@ import About from "../views/About.vue"
 import Home from "../views/Home.vue"
 import Questions from "../views/Questions.vue"
 import Letter from "../views/Letter.vue"
+import Voice from "../views/Voice.vue"
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,11 @@ const routes = [
         path: '/letter',
         name: 'letter',
         component: Letter
+    },
+    {
+        path: '/voice',
+        name: 'voice',
+        component: Voice,
     },
 ];
 

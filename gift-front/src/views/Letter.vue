@@ -64,7 +64,7 @@ export default {
       httpaxios.get(this, url + "/get-score/", response => {
         if (response.data.data !== "Unauthorized") {
           this.score = response.data.data;
-          if (this.score <= 5) {
+          if (this.score < 5) {
             this.$router.push("/login");
           }
         } else {

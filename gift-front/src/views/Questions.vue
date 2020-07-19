@@ -31,7 +31,7 @@ export default {
       allQuestions: [],
       question: "",
       answer: "",
-      num: 0
+      num: -1
     };
   },
   computed: {
@@ -68,13 +68,14 @@ export default {
               console.log(response);
             }
           );
-          if (this.num == l) {
+          if (this.num >= l) {
             this.$router.push("/home");
+          } else {
+            this.question = this.allQuestions[this.num]["questions_text"];
+            answer.value = "";
+            answer.style.height = "50px";
+            answer.blur();
           }
-          this.question = this.allQuestions[this.num]["questions_text"];
-          answer.value = "";
-          answer.style.height = "50px";
-          answer.blur();
         } else {
           // Dialog.alert({
           //   message: '回答错误哦',
@@ -84,7 +85,7 @@ export default {
       }
     }
   },
-  created() {
+  beforeMount() {
     const getScore = () => {
       let url = this.serviceUrl;
       httpaxios.get(this, url + "/get-score/", response => {
@@ -98,23 +99,36 @@ export default {
       });
     };
     getScore();
-  },
 
-  mounted() {
     const getQuestions = () => {
       let url = this.serviceUrl;
       httpaxios.get(this, url + "/show-questions/", response => {
         if (response.data.data !== "Unauthorized") {
           this.allQuestions = response.data.data;
-          this.question = this.allQuestions[this.num]["questions_text"];
+          let l = this.allQuestions.length;
+          if (this.num >= l) {
+            Dialog.alert({
+              message: "你已经答完全部题目了哦"
+            }).then(() => {
+              this.$router.push("/home");
+            });
+          } else {
+            this.question = this.allQuestions[this.num]["questions_text"];
+          }
         } else {
           localStorage.removeItem("Authorization");
           this.$router.push("/login");
         }
       });
     };
-    getQuestions();
+    if (this.num === -1) {
+      setTimeout(getQuestions(), 1000);
+    } else {
+      getQuestions();
+    }
+  },
 
+  mounted() {
     document
       .querySelector("#answer")
       .addEventListener("focus", this.moveQuestion, true);
