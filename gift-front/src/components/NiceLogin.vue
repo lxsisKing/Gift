@@ -2,7 +2,8 @@
   <div class="page">
     <div class="container">
       <div class="left">
-        <div class="login">1096天啦</div>
+        <div class="loginTop">我们在一起：</div>
+        <div class="login">{{ time }}</div>
         <div class="eula">三周年快乐！❤❤❤</div>
       </div>
       <div class="right">
@@ -48,6 +49,8 @@ export default {
   },
   data() {
     return {
+      interval: "",
+      time: "",
       loginForm: {
         username: "",
         passwd: ""
@@ -58,7 +61,7 @@ export default {
     ...mapState(["serviceUrl"])
   },
   methods: {
-    // serviceUrl返回的是一个函数，return this.$store.state.serviceUrl
+    // serviceUrl返回的是一个函数，return this.$store.st ate.serviceUrl
     ...mapMutations(["changeLogin"]),
     login() {
       // let that = this
@@ -132,6 +135,26 @@ export default {
           easing: "easeOutQuart"
         }
       });
+    },
+    getTime() {
+      let beginTime = "2017/07/15 21:00:00";
+      let nowTime = new Date();
+      let time = nowTime.getTime() - new Date(beginTime).getTime();
+
+      let days = Math.floor(time / (24 * 3600 * 1000));
+
+      let leftOne = time % (24 * 3600 * 1000);
+      let hours = Math.floor(leftOne / (3600 * 1000));
+
+      let leftTwo = leftOne % (3600 * 1000);
+      let minutes = Math.floor(leftTwo / (60 * 1000));
+
+      let leftThree = leftTwo % (60 * 1000);
+      let seconds = Math.floor(leftThree / 1000);
+
+      
+      this.time = days + "天" + hours + "小时" + minutes + "分钟" + seconds + "秒"
+      
     }
   },
 
@@ -145,18 +168,12 @@ export default {
     document
       .querySelector("#submit")
       .addEventListener("focus", this.submitAnime, true);
+
+    this.interval = setInterval(this.getTime, 1000);
+  },
+  beforeDestroy() {
+    clearInterval(this.interval);
   }
-  // beforeDestroy() {
-  //   document
-  //     .querySelector("#username")
-  //     .removeEventListener("focus", this.usernameAnime);
-  //   document
-  //     .querySelector("#password")
-  //     .removeEventListener("focus", this.passwordAnime);
-  //   document
-  //     .querySelector("#submit")
-  //     .removeEventListener("focus", this.submitAnime);
-  // }
 };
 </script>
 
@@ -220,10 +237,15 @@ body {
     max-height: 270px;
   }
 }
-.login {
-  font-size: 50px;
+.loginTop {
+  font-size: 30px;
   font-weight: 900;
-  margin: 70px 20px 20px;
+  margin: 30px 20px 10px;
+}
+.login {
+  font-size: 30px;
+  font-weight: 900;
+  margin: 10px 20px 10px;
 }
 .eula {
   color: #999;
